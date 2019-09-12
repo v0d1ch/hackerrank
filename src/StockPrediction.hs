@@ -1,4 +1,5 @@
-{-# language ScopedTypeVariables #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+
 module StockPrediction where
 
 readMultipleLinesAsList :: Int -> IO [Int]
@@ -8,8 +9,19 @@ readMultipleLinesAsList n = do
   rest <- readMultipleLinesAsList (n - 1)
   return (line : rest)
 
-main :: IO()
+readALine :: IO Int
+readALine = read <$> getLine
+
+main :: IO ()
 main = do
-  arrLength :: Int <- read <$> getLine
+  arrLength <- readALine
   arr <- readMultipleLinesAsList arrLength
+  queryNumber <- readALine
+  let noOfQueries = replicate queryNumber 1
+  indexAndMargin <-
+    mapM (const (readMultipleLinesAsList 2)) noOfQueries
+  putStrLn "============"
+  print arrLength
   print arr
+  print queryNumber
+  print indexAndMargin
